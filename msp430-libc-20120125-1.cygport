@@ -1,0 +1,20 @@
+TOOLCHAIN_TARGET="msp430"
+inherit toolchain
+
+DESCRIPTION="Libc for MSP430 embedded toolchain"
+HOMEPAGE="http://mspgcc.sourceforge.net/"
+SRC_URI="mirror://sourceforge/mspgcc/${P}.tar.bz2"
+
+src_compile() {
+	lndirs
+	cd ${B}
+	rm -f src/Makefile
+	./configure --prefix=/usr || error "configure failed"
+	cd ${B}/src
+	cygmake
+}
+
+src_install() {
+	cd ${B}/src
+	cyginstall PREFIX=${D}/usr
+}
