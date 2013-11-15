@@ -1,0 +1,28 @@
+TOOLCHAIN_TARGET="msp430"
+inherit toolchain
+
+NAME="msp430-libc"
+VERSION=20120224
+RELEASE=1
+CATEGORY="Devel"
+SUMMARY="C library for MSP430 embedded toolchain"
+DESCRIPTION="This package provides a basic C library for the Texas Instruments
+MSP430 family of MCUs."
+REQUIRES="msp430mcu"
+HOMEPAGE="http://mspgcc.sourceforge.net/"
+SRC_URI="mirror://sourceforge/mspgcc/${NAME}-${VERSION}.tar.bz2"
+PATCH_URI="mirror://sourceforge/mspgcc/${NAME}-${VERSION}-sf3522752.patch"
+
+src_compile() {
+	lndirs
+	cd ${B}
+	rm -f src/Makefile
+	./configure --prefix=/usr || error "configure failed"
+	cd ${B}/src
+	cygmake
+}
+
+src_install() {
+	cd ${B}/src
+	cyginstall PREFIX=${D}/usr
+}
